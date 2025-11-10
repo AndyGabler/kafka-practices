@@ -19,7 +19,7 @@ public class ConsumerApp {
         final String consumerName = inputScanner.nextLine();
 
         final Properties properties = new Properties();
-        properties.put(ConsumerConfig.BOOTSTRAP_SERVERS_CONFIG, "localhost:9082");
+        properties.put(ConsumerConfig.BOOTSTRAP_SERVERS_CONFIG, "localhost:9092");
         properties.put(ConsumerConfig.KEY_DESERIALIZER_CLASS_CONFIG, StringDeserializer.class.getName());
         properties.put(ConsumerConfig.VALUE_DESERIALIZER_CLASS_CONFIG, StringDeserializer.class.getName());
         properties.put(ConsumerConfig.GROUP_ID_CONFIG, consumerName);
@@ -64,19 +64,23 @@ public class ConsumerApp {
         final Properties consumerProperties = makeProperties(inputScanner);
 
         LOGGER.info(() -> "Starting consumer.");
-        try (Consumer<String, String> consumer = new KafkaConsumer<>(consumerProperties)) {
+        try (KafkaConsumer<String, String> consumer = new KafkaConsumer<>(consumerProperties)) {
             LOGGER.info(() -> "Subscribing to topic...");
             consumer.subscribe(Collections.singletonList("my-kafka-topic.message"));
 
-            LOGGER.info(() -> "Polling for records...");
-            // TODO taking way longer than expected.
-            ConsumerRecords<String, String> records = consumer.poll(0);
+            LOGGER.info(() -> "Assignment info: " + consumer.assignment().toString());
 
-            LOGGER.info(() -> "Found " + records.count() + " records.");
-            records.forEach(ConsumerApp::handleMessage);
+            LOGGER.info(() -> "Polling for records...");
+            while (true) {
+                final ConsumerRecords<String, String> records = consumer.poll(Duration.ofMillis(500));
+
+                if (!records.isEmpty()) {
+                    LOGGER.info(() -> "Found " + records.count() + " records.");
+                    records.forEach(ConsumerApp::handleMessage);
+                }
+            }
         } catch (Exception exception) {
             LOGGER.log(Level.SEVERE, "Exception caught.", exception);
         }
-
     }
 }
