@@ -1,0 +1,41 @@
+<!--
+NOTE: This form could be better. It could validate the input, or the controller could.
+
+It intentionally does not so there's an easy way to see the Kafka Producer rejecting messages that do not fit the
+schema.
+ -->
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="layouts/layout">
+<head>
+    <title>NFL Game Result Form</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+</head>
+<body>
+    <label th:text="${userMessage}"></label>
+    <br/>
+    <form method="POST" action="#" th:object="${result}" th:action="@{/gameResult}" modelAttribute="result">
+        <table>
+            <tr>
+                <td><label path="homeTeam">Home Team</label></td>
+                <td><input path="homeTeam" th:field="*{homeTeam}"/></td>
+            </tr>
+            <tr>
+                <td><label path="homeTeamScore">Home Team Score</label></td>
+                <td><input path="homeTeamScore" type="number" step="1" th:field="*{homeTeamScore}"/></td>
+            </tr>
+            <tr>
+                <td><label path="visitingTeam">Visiting Team</label></td>
+                <td><input path="visitingTeam" th:field="*{visitingTeam}"/></td>
+            </tr>
+            <tr>
+                <td><label path="visitingTeamScore">Visiting Team Score</label></td>
+                <td><input path="visitingTeamScore" type="number" step="1" th:field="*{visitingTeamScore}"/></td>
+            </tr>
+            <tr>
+                <td><input type="submit" value="Submit"/></td>
+            </tr>
+        </table>
+    </form>
+</body>
+</html>

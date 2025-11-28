@@ -1,7 +1,7 @@
 # Basic Producer Consumer
 
-This sub-folder contains a basic consumer app and a basic producer app. Goal of it was to demonstrate a few concept to
-myself on some Kafka concepts, namely:
+This sub-folder contains a basic consumer app and a basic producer app. Goal of it was to demonstrate a few Kafka concepts 
+to myself, namely:
  * Basic Connection with Producer
  * Basic Connection with Consumer
  * Partitioning, particularly with `null` message key
