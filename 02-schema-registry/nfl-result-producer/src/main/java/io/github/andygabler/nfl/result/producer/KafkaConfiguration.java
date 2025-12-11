@@ -1,5 +1,7 @@
 package io.github.andygabler.nfl.result.producer;
 
+import io.confluent.kafka.schemaregistry.client.CachedSchemaRegistryClient;
+import io.confluent.kafka.schemaregistry.client.SchemaRegistryClient;
 import io.confluent.kafka.serializers.AbstractKafkaSchemaSerDeConfig;
 import io.confluent.kafka.serializers.json.KafkaJsonSchemaSerializer;
 import io.github.andygabler.nfl.result.producer.gameresult.GameResult;
@@ -29,7 +31,12 @@ public class KafkaConfiguration {
         properties.put(ProducerConfig.BOOTSTRAP_SERVERS_CONFIG, "localhost:9092");
         properties.put(ProducerConfig.KEY_SERIALIZER_CLASS_CONFIG, StringSerializer.class.getName());
         properties.put(ProducerConfig.VALUE_SERIALIZER_CLASS_CONFIG, KafkaJsonSchemaSerializer.class.getName());
-        properties.put(AbstractKafkaSchemaSerDeConfig.SCHEMA_REGISTRY_URL_CONFIG, "http://localhost:8435");
+        properties.put(AbstractKafkaSchemaSerDeConfig.SCHEMA_REGISTRY_URL_CONFIG, "http://localhost:8081");
         return new KafkaProducer<>(properties);
+    }
+
+    @Bean
+    public SchemaRegistryClient schemaRegistryClient() {
+        return new CachedSchemaRegistryClient("http://localhost:8081", 1);
     }
 }

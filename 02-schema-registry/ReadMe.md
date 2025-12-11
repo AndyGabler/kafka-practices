@@ -29,3 +29,15 @@ To run the consumer, simply run
 gradlew consumer:run
 ```
 
+## Schema Setup
+
+You can navigate to 
+```
+http://localhost:8080/schemaInfo
+``` 
+to hit a button to submit the
+schema to Schema Registry.
+
+The schema can be viewed at
+```
+```
