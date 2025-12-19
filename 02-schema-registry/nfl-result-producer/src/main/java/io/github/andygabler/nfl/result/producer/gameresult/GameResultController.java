@@ -20,7 +20,7 @@ public class GameResultController {
     @GetMapping("/gameResult")
     public ModelAndView gameResultForm(String userMessage){
         LOGGER.info("Game result form loaded.");
-        final ModelAndView modelAndView = new ModelAndView("resultForm", "result", new GameResult());
+        final ModelAndView modelAndView = new ModelAndView("resultForm", "result", new GameResultFormDTO());
         modelAndView.addObject("userMessage", userMessage);
         return modelAndView;
     }
@@ -28,7 +28,7 @@ public class GameResultController {
     @PostMapping("/gameResult")
     public ModelAndView gameResultForm(
         @ModelAttribute("result")
-        GameResult result
+        GameResultFormDTO result
     ) {
         try {
             gameResultService.postResult(result);
