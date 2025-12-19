@@ -1,6 +1,8 @@
 package io.github.andygabler.nfl.result.producer.schema;
 
 import io.confluent.kafka.schemaregistry.client.SchemaRegistryClient;
+import io.confluent.kafka.schemaregistry.json.JsonSchema;
+import io.github.andygabler.nfl.result.producer.gameresult.GameResultService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,7 +19,6 @@ import java.nio.charset.StandardCharsets;
 public class SchemaController {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(SchemaController.class);
-    private static final String SCHEMA_ID = "nfl-game-result-schema";
 
     @Autowired
     private SchemaRegistryClient schemaRegistryClient;
@@ -42,8 +43,16 @@ public class SchemaController {
 
     @PostMapping("/schemaInfo")
     public ModelAndView submitSchema() {
+        LOGGER.info("Attempting to submit schema.");
         try {
+            final String schemaDefinition = schemaText();
+            LOGGER.info("Schema content to submit: \n" + schemaDefinition);
 
+            final JsonSchema jsonSchema = new JsonSchema(schemaDefinition);
+            final String subject = GameResultService.TOPIC_NAME + "-value";
+            final int schemaId = schemaRegistryClient.register(subject, jsonSchema);
+
+            LOGGER.info("Schema submitted with ID " + schemaId);
             return schemaInfo("Schema submitted.");
         } catch (Exception exception) {
             LOGGER.error("Unable to submit schema.", exception);

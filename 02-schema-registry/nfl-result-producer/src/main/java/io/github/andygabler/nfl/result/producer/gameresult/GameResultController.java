@@ -34,6 +34,7 @@ public class GameResultController {
             gameResultService.postResult(result);
             return gameResultForm("Submitted game result.");
         } catch (Exception exception) {
+            LOGGER.error("Error submitting game result.", exception);
             return gameResultForm(exception.toString());
         }
     }

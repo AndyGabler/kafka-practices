@@ -11,6 +11,7 @@ import org.springframework.stereotype.Service;
 public class GameResultService {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(GameResultService.class);
+    public static final String TOPIC_NAME = "nfl.game.result.v4";
 
     @Autowired
     private KafkaProducer<String, GameResult> kafkaProducer;
@@ -20,7 +21,7 @@ public class GameResultService {
 
         LOGGER.info("Sending result of " + key + " to Kafka topic.");
 
-        final ProducerRecord<String, GameResult> record = new ProducerRecord<>(key, result);
+        final ProducerRecord<String, GameResult> record = new ProducerRecord<>(TOPIC_NAME, key, result);
         kafkaProducer.send(record);
     }
 }
