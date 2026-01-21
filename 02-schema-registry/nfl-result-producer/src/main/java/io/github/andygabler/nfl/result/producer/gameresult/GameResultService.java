@@ -13,7 +13,7 @@ import org.springframework.stereotype.Service;
 public class GameResultService {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(GameResultService.class);
-    public static final String TOPIC_NAME = "nfl.game.result.v2";
+    public static final String TOPIC_NAME = "nfl.game.result.v3";
 
     @Autowired
     private KafkaProducer<String, GameResult> kafkaProducer;
@@ -24,6 +24,7 @@ public class GameResultService {
         gameResult.setVisitingTeam(Team.valueOf(result.getVisitingTeam()));
         gameResult.setHomeTeamScore(result.getHomeTeamScore());
         gameResult.setVisitingTeamScore(result.getVisitingTeamScore());
+        gameResult.setDatePlayed(result.getDatePlayed());
 
         final String key = gameResult.getVisitingTeam() + " @ " + gameResult.getHomeTeam();
 

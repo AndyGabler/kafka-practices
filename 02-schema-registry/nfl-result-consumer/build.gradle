@@ -16,12 +16,23 @@ java {
 
 repositories {
 	mavenCentral()
+	maven {
+		url 'https://packages.confluent.io/maven/'
+	}
 }
 
 dependencies {
 	implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
 	implementation 'org.springframework.boot:spring-boot-starter-restclient'
 	implementation 'org.springframework.boot:spring-boot-starter-webmvc'
+
+	implementation 'org.apache.kafka:kafka-clients:3.9.1'
+	implementation "io.confluent:kafka-json-schema-serializer:8.0.0"
+	implementation 'org.projectlombok:lombok:1.18.28'
+
+	compileOnly 'org.projectlombok:lombok'
+	annotationProcessor 'org.projectlombok:lombok'
+
 	runtimeOnly 'com.h2database:h2'
 	testImplementation 'org.springframework.boot:spring-boot-starter-data-jpa-test'
 	testImplementation 'org.springframework.boot:spring-boot-starter-restclient-test'
