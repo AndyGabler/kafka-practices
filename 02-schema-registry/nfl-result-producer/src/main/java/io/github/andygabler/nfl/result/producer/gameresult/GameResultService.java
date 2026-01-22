@@ -18,6 +18,11 @@ public class GameResultService {
     @Autowired
     private KafkaProducer<String, GameResult> kafkaProducer;
 
+    /**
+     * Post the result for a game to a Kafka topic.
+     *
+     * @param result The result to post
+     */
     public void postResult(GameResultFormDTO result) {
         final GameResult gameResult = new GameResult();
         gameResult.setHomeTeam(Team.valueOf(result.getHomeTeam()));

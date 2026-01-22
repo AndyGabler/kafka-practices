@@ -6,6 +6,8 @@ import io.github.andygabler.nfl.result.consumer.kafka.model.ConsumedGameResult;
 import org.apache.kafka.clients.consumer.ConsumerRecord;
 import org.apache.kafka.clients.consumer.ConsumerRecords;
 import org.apache.kafka.clients.consumer.KafkaConsumer;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -22,19 +24,51 @@ import java.time.Duration;
 @Service
 public class ConsumeGameResultService {
 
+    private static final Logger LOGGER = LoggerFactory.getLogger(ConsumeGameResultService.class);
+
     @Autowired
     private KafkaConsumer<String, ConsumedGameResult> kafkaConsumer;
 
     @Autowired
     private GameResultRepository repository;
 
+    /**
+     * Attempt to read Kafka topic to update the results in the H2 in-memory database.
+     */
     public void updateGameResults() {
-        final ConsumerRecords<String, ConsumedGameResult> kafkaRecords = kafkaConsumer.poll(Duration.ofMillis(500));
-        
+        ConsumerRecords<String, ConsumedGameResult> kafkaRecords;
+        try {
+            LOGGER.info("Attempting to update game results. Starting initial poll.");
+            /*
+             * This initial call to poll may not do anything. Since this is from a request thread, it may take multiple
+             * calls to get results. This is because the first call might need to do some other tasks.
+             */
+            kafkaRecords = kafkaConsumer.poll(Duration.ofMillis(500));
+        } catch (Exception exception) {
+            LOGGER.error("Failure in polling for records. Committing offset to skip.", exception);
+            kafkaConsumer.seekToEnd(kafkaConsumer.assignment());
+            throw exception;
+        }
         kafkaRecords.forEach(this::saveRecord);
     }
 
+    /**
+     * Save a result to the database from a Kafka record.
+     *
+     * @param record The Kafka record to save to the database
+     */
     private void saveRecord(ConsumerRecord<String, ConsumedGameResult> record) {
+        LOGGER.info(
+            "Found new message.\n" +
+            "\tTopic = " +
+            record.topic() +
+            "\n" +
+            "\tPartition = " +
+            record.partition() +
+            "\n" +
+            "\tKey = " +
+            record.key()
+        );
         final ConsumedGameResult consumedGameResult = record.value();
 
         final GameResultEntity gameResult = new GameResultEntity();
