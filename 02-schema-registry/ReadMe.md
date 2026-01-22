@@ -67,7 +67,7 @@ far.
 From there, if we run the Producer application, we can navigate to its endpoint at 
 [http://localhost:8080/gameResult](http://localhost:8080/gameResult). This will bring up the following form.
 
-![Game-Result-Form](/docs/demo/01-game-result-form.png)
+![Game-Result-Form](/docs/demo/01-game-result-form.PNG)
 
 This form is used to submit the result of an NFM game to the Kafka topic `nfl.game-results.v3`. It will do so with
 Schema registy in mind. When this setup is first done, if we navigate to Schema registry to search for Schemas at 
