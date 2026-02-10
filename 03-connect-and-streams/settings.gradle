@@ -11,6 +11,6 @@ plugins {
     id 'org.gradle.toolchains.foojay-resolver-convention' version '0.9.0'
 }
 
-rootProject.name = 'kafka-schema-registry-apps'
-include('nfl-result-consumer')
-include('nfl-result-producer')
+rootProject.name = 'kafka-connect-and-streams-apps'
+include('nfl-score-liquibase')
+include('nfl-result-stream')

@@ -1,6 +1,6 @@
 # Schema Registry App
 
-This sub-folder contains a =consumer app and a basic producer app. Goal of this was to demonstrate the
+This sub-folder contains a consumer app and a basic producer app. Goal of this was to demonstrate the
 usage of Kafka Schema Registry to myself.
 
 Both apps connect to a local Kafka instance running at `localhost:9092` and interact with a topic named 
