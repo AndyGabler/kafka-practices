@@ -10,3 +10,23 @@ Goal is to have a few different topics.
  * Kafka Connect will create topics from the games and scores tables
  * We will have an application that will POST, GET and DELETE from the database
  * We will have a Streams application to post to topics for game results and analysis topic
+
+
+http://localhost:8083/connector-plugins
+http://localhost:8083/connectors
+http://localhost:8083/connectors/postgres-connector
+
+```ps
+docker exec -it kafka bash
+```
+e
+```sh
+kafka-topics --bootstrap-server localhost:29092 --list
+```
+```sh
+kafka-console-consumer \
+  --bootstrap-server localhost:29092 \
+  --topic nflscoredatabase.public.football_game \
+  --from-beginning \
+  --max-messages 1
+```

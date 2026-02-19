@@ -4,6 +4,9 @@
     xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-latest.xsd">
 
     <changeSet id="2026-02-15-initial-data-insert" author="AndyGabler">
+        <preConditions>
+            <tableIsEmpty tableName="football_game"/>
+        </preConditions>
         <loadData tableName="football_game" file="games.csv" relativeToChangelogFile="true">
             <column name="id" header="id" />
             <column name="match_date" header="matchDate" />
