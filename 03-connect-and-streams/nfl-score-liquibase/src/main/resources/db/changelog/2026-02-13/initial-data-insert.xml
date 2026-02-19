@@ -1,0 +1,21 @@
+<databaseChangeLog
+    xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-latest.xsd">
+
+    <changeSet id="2026-02-15-initial-data-insert" author="AndyGabler">
+        <loadData tableName="football_game" file="games.csv" relativeToChangelogFile="true">
+            <column name="id" header="id" />
+            <column name="match_date" header="matchDate" />
+            <column name="visiting_team" header="visitingTeam" />
+            <column name="home_team" header="homeTeam" />
+        </loadData>
+        <loadData tableName="game_score" file="scores.csv" relativeToChangelogFile="true">
+            <column name="football_game_id" header="gameId"/>
+            <column name="quarterback" header="quarterback"/>
+            <column name="ball_carrier" header="ballCarrier"/>
+            <column name="snap_type" header="snapType"/>
+            <column name="team" header="team"/>
+        </loadData>
+    </changeSet>
+</databaseChangeLog>

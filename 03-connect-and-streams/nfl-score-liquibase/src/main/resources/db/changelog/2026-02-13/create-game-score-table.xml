@@ -1,0 +1,63 @@
+<databaseChangeLog
+    xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-latest.xsd">
+
+    <changeSet id="2026-02-13-create-game-table" author="AndyGabler" runAlways="true">
+        <preConditions onFail="CONTINUE">
+            <not>
+                <tableExists tableName="football_game"/>
+            </not>
+        </preConditions>
+        <createTable tableName="football_game">
+            <column name="id" type="bigint" autoIncrement="true">
+                <constraints primaryKey="true" nullable="false" />
+            </column>
+            <column name="match_date" type="date">
+                <constraints nullable="false" />
+            </column>
+            <column name="home_team" type="varchar(255)">
+                <constraints nullable="false" />
+            </column>
+            <column name="visiting_team" type="varchar(255)">
+                <constraints nullable="false" />
+            </column>
+        </createTable>
+    </changeSet>
+
+    <changeSet id="2026-02-13-create-game-score-table" author="AndyGabler" runAlways="true">
+        <preConditions onFail="CONTINUE">
+            <not>
+                <and>
+                    <tableExists tableName="game_score"/>
+                </and>
+            </not>
+        </preConditions>
+        <createTable tableName="game_score">
+            <column name="id" type="bigint" autoIncrement="true">
+                <constraints primaryKey="true" nullable="false" />
+            </column>
+            <column name="football_game_id" type="bigint">
+                <constraints nullable="false" />
+            </column>
+            <column name="quarterback" type="varchar(255)">
+                <constraints nullable="false" />
+            </column>
+            <column name="ball_carrier" type="varchar(255)">
+                <constraints nullable="true" />
+            </column>
+            <column name="snap_type" type="varchar(255)">
+                <constraints nullable="false" />
+            </column>
+            <column name="team" type="varchar(255)">
+                <constraints nullable="false" />
+            </column>
+        </createTable>
+        <addForeignKeyConstraint
+            baseTableName="game_score"
+            baseColumnNames="football_game_id"
+            constraintName="fk_game_score_to_football_game_id"
+            referencedTableName="football_game"
+            referencedColumnNames="id" />
+    </changeSet>
+</databaseChangeLog>

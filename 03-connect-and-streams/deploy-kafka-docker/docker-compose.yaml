@@ -7,11 +7,16 @@ services:
       POSTGRES_USER: postgres
       POSTGRES_PASSWORD: Admin123
       POSTGRES_DB: NFLScoreDatabase
+    command: >
+      postgres
+      -c wal_level=logical
+      -c max_replication_slots=4
+      -c max_wal_senders=4
     ports:
-      - "5432:5432"
+      - "5433:5432"
     volumes:
       - pgdata:/var/lib/postgresql/data
-  
+
   kafka:
     image: confluentinc/cp-kafka:latest
     container_name: kafka

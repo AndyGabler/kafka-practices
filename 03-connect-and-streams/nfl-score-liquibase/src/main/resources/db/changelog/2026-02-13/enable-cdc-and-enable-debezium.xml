@@ -1,0 +1,31 @@
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-latest.xsd">
+    <changeSet id="2026-02-13-enable-cdc" author="AndyGabler" runAlways="true">
+        <sql>
+            ALTER TABLE public.football_game
+            REPLICA IDENTITY FULL;
+
+            ALTER TABLE public.game_score
+            REPLICA IDENTITY FULL;
+        </sql>
+    </changeSet>
+    <changeSet id="2026-02-13-create-debezium-user" author="AndyGabler" runAlways="true">
+        <preConditions onFail="CONTINUE">
+            <sqlCheck expectedResult="0">
+                SELECT COUNT(*) FROM pg_roles WHERE rolname = 'debezium'
+            </sqlCheck>
+        </preConditions>
+        <sql>
+            CREATE ROLE debezium WITH LOGIN PASSWORD 'debezium';
+            ALTER ROLE debezium REPLICATION;
+            GRANT CONNECT ON DATABASE "NFLScoreDatabase" TO debezium;
+
+            GRANT USAGE ON SCHEMA public TO debezium;
+            GRANT SELECT ON ALL TABLES IN SCHEMA public TO debezium;
+            ALTER DEFAULT PRIVILEGES IN SCHEMA public
+            GRANT SELECT ON TABLES TO debezium;
+        </sql>
+    </changeSet>
+</databaseChangeLog>

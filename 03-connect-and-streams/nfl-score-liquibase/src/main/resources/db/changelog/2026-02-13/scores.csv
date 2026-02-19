@@ -1,0 +1,251 @@
+gameId,quarterback,ballCarrier,snapType,team
+1,JJ McCarthy,Aaron Jones,PASSING,Vikings
+1,JJ McCarthy,Will Reichard,EXTRA POINT KICK,Vikings
+1,Patrick Mahomes,Travis Kelce,PASSING,Chiefs
+1,Patrick Mahomes,Harrison Butker,EXTRA POINT KICK,Chiefs
+1,JJ McCarthy,Justin Jefferson,PASSING,Vikings
+1,JJ McCarthy,Will Reichard,EXTRA POINT KICK,Vikings
+1,JJ McCarthy,Jordan Addison,RUSHING,Vikings
+1,Patrick Mahomes,Isiah Pacheco,PASSING,Chiefs
+1,Patrick Mahomes,Isiah Pacheco,2-POINT CONVERSION,Chiefs
+1,JJ McCarthy,Will Reichard,FIELD GOAL,Vikings
+2,Geno Smith,Jakobi Meyers,PASSING,Raiders
+2,Geno Smith,Daniel Carlson,EXTRA POINT KICK,Raiders
+2,Caleb Williams,Keenan Allen,RUSHING,Bears
+2,Caleb Williams,Cairo Santos,EXTRA POINT KICK,Bears
+2,Geno Smith,Davante Adams,PASSING,Raiders
+2,Geno Smith,Daniel Carlson,EXTRA POINT KICK,Raiders
+2,Caleb Williams,Cairo Santos,FIELD GOAL,Bears
+2,Caleb Williams,Cairo Santos,FIELD GOAL,Bears
+2,Caleb Williams,Cairo Santos,FIELD GOAL,Bears
+2,Caleb Williams,Cairo Santos,FIELD GOAL,Bears
+3,Justin Herbert,Austin Ekeler,RUSHING,Chargers
+3,Justin Herbert,Cameron Dicker,EXTRA POINT KICK,Chargers
+3,CJ Stroud,Nico Collins,RUSHING,Texans
+3,CJ Stroud,Ka'imi Fairbairn,EXTRA POINT KICK,Texans
+3,Justin Herbert,Quentin Johnston,PASSING,Chargers
+3,Justin Herbert,Cameron Dicker,EXTRA POINT KICK,Chargers
+3,CJ Stroud,Nico Collins,PASSING,Texans
+3,CJ Stroud,Ka'imi Fairbairn,EXTRA POINT KICK,Texans
+3,Justin Herbert,Quentin Johnston,RUSHING,Chargers
+3,Justin Herbert,Cameron Dicker,EXTRA POINT KICK,Chargers
+3,CJ Stroud,Tank Dell,RUSHING,Texans
+3,CJ Stroud,Ka'imi Fairbairn,EXTRA POINT KICK,Texans
+3,Justin Herbert,Quentin Johnston,RUSHING,Chargers
+3,Justin Herbert,Cameron Dicker,EXTRA POINT KICK,Chargers
+3,CJ Stroud,Ka'imi Fairbairn,FIELD GOAL,Texans
+3,CJ Stroud,Ka'imi Fairbairn,FIELD GOAL,Texans
+3,Justin Herbert,Cameron Dicker,FIELD GOAL,Chargers
+3,CJ Stroud,Ka'imi Fairbairn,FIELD GOAL,Texans
+4,Tua Tagovailoa,Jaylen Waddle,RUSHING,Dolphins
+4,Tua Tagovailoa,Riley Patterson,EXTRA POINT KICK,Dolphins
+4,Jaden Daniels,Jahan Dotson,PASSING,Commanders
+4,Tua Tagovailoa,Raheem Mostert,PASSING,Dolphins
+4,Tua Tagovailoa,Riley Patterson,EXTRA POINT KICK,Dolphins
+4,Jaden Daniels,Jahan Dotson,RUSHING,Commanders
+4,Jaden Daniels,Jake Moody,EXTRA POINT KICK,Commanders
+5,Aaron Rodgers,Jaylen Warren,RUSHING,Steelers
+5,Aaron Rodgers,Chris Boswell,EXTRA POINT KICK,Steelers
+5,Caleb Williams,DJ Moore,RUSHING,Bears
+5,Caleb Williams,Cairo Santos,EXTRA POINT KICK,Bears
+5,Caleb Williams,Cairo Santos,FIELD GOAL,Bears
+6,Joe Flacco,Tee Higgins,RUSHING,Bengals
+6,Joe Flacco,Evan McPherson,EXTRA POINT KICK,Bengals
+6,Matthew Stafford,Cooper Kupp,RUSHING,Rams
+6,Matthew Stafford,Harrison Mevis,EXTRA POINT KICK,Rams
+6,Matthew Stafford,Puka Nacua,PASSING,Rams
+6,Matthew Stafford,Harrison Mevis,EXTRA POINT KICK,Rams
+6,Joe Flacco,Joe Mixon,RUSHING,Bengals
+6,Joe Flacco,Evan McPherson,EXTRA POINT KICK,Bengals
+6,Matthew Stafford,Kyren Williams,PASSING,Rams
+6,Matthew Stafford,Harrison Mevis,EXTRA POINT KICK,Rams
+6,Joe Flacco,Tee Higgins,RUSHING,Bengals
+6,Joe Flacco,Evan McPherson,EXTRA POINT KICK,Bengals
+6,Joe Flacco,Ja'Marr Chase,RUSHING,Bengals
+6,Joe Flacco,Evan McPherson,EXTRA POINT KICK,Bengals
+6,Matthew Stafford,Harrison Mevis,FIELD GOAL,Rams
+6,Joe Flacco,Evan McPherson,FIELD GOAL,Bengals
+6,Matthew Stafford,Harrison Mevis,FIELD GOAL,Rams
+6,Joe Flacco,Evan McPherson,FIELD GOAL,Bengals
+7,Jared Goff,Jahmyr Gibbs,PASSING,Lions
+7,Jared Goff,Jake Bates,EXTRA POINT KICK,Lions
+7,Trevor Lawrence,Travis Etienne,PASSING,Jaguars
+7,Trevor Lawrence,Cam Little,EXTRA POINT KICK,Jaguars
+7,Jared Goff,Jake Bates,FIELD GOAL,Lions
+8,Josh Allen,Stefon Diggs,RUSHING,Bills
+8,Josh Allen,Matt Prater,EXTRA POINT KICK,Bills
+8,Josh Allen,James Cook,RUSHING,Bills
+8,Josh Allen,Matt Prater,EXTRA POINT KICK,Bills
+8,Trevor Lawrence,Brian Thomas Jr.,PASSING,Jaguars
+8,Trevor Lawrence,Brian Thomas Jr.,2-POINT CONVERSION,Jaguars
+8,Trevor Lawrence,Brian Thomas Jr.,PASSING,Jaguars
+8,Trevor Lawrence,Cam Little,EXTRA POINT KICK,Jaguars
+8,Trevor Lawrence,Cam Little,FIELD GOAL,Jaguars
+8,Josh Allen,Matt Prater,FIELD GOAL,Bills
+9,Shedeur Sanders,Amari Cooper,RUSHING,Browns
+9,Shedeur Sanders,Andre Szmyt,EXTRA POINT KICK,Browns
+9,Bryce Young,Diontae Johnson,RUSHING,Panthers
+9,Bryce Young,Ryan Fitzgerald,EXTRA POINT KICK,Panthers
+9,Shedeur Sanders,Amari Cooper,PASSING,Browns
+9,Shedeur Sanders,Andre Szmyt,EXTRA POINT KICK,Browns
+9,Bryce Young,Chuba Hubbard,RUSHING,Panthers
+9,Bryce Young,Ryan Fitzgerald,EXTRA POINT KICK,Panthers
+9,Shedeur Sanders,Amari Cooper,RUSHING,Browns
+9,Shedeur Sanders,Andre Szmyt,EXTRA POINT KICK,Browns
+9,Shedeur Sanders,Andre Szmyt,FIELD GOAL,Browns
+9,Shedeur Sanders,Andre Szmyt,FIELD GOAL,Browns
+9,Bryce Young,Ryan Fitzgerald,FIELD GOAL,Panthers
+9,Shedeur Sanders,Andre Szmyt,FIELD GOAL,Browns
+10,Bryce Young,Adam Thielen,RUSHING,Panthers
+10,Bryce Young,Ryan Fitzgerald,EXTRA POINT KICK,Panthers
+10,Bryce Young,Adam Thielen,PASSING,Panthers
+10,Aaron Rodgers,George Pickens,RUSHING,Steelers
+10,Aaron Rodgers,Chris Boswell,EXTRA POINT KICK,Steelers
+10,Bryce Young,Ryan Fitzgerald,FIELD GOAL,Panthers
+11,Cameron Ward,Calvin Ridley,RUSHING,Titans
+11,Cameron Ward,Joey Slye,EXTRA POINT KICK,Titans
+11,Cameron Ward,Calvin Ridley,PASSING,Titans
+11,Cameron Ward,Joey Slye,EXTRA POINT KICK,Titans
+11,Sam Darnold,Kenneth Walker III,RUSHING,Seahawks
+11,Cameron Ward,DeAndre Hopkins,RUSHING,Titans
+11,Cameron Ward,Joey Slye,EXTRA POINT KICK,Titans
+11,Sam Darnold,Kenneth Walker III,RUSHING,Seahawks
+11,Cameron Ward,Joey Slye,FIELD GOAL,Titans
+11,Sam Darnold,Jason Myers,FIELD GOAL,Seahawks
+12,Joe Flacco,Ja'Marr Chase,PASSING,Bengals
+12,Joe Flacco,Evan McPherson,EXTRA POINT KICK,Bengals
+12,Joe Flacco,Evan McPherson,FIELD GOAL,Bengals
+13,CJ Stroud,Joe Mixon,RUSHING,Texans
+13,Justin Herbert,Keenan Allen,RUSHING,Chargers
+13,Justin Herbert,Cameron Dicker,EXTRA POINT KICK,Chargers
+13,CJ Stroud,Joe Mixon,PASSING,Texans
+13,CJ Stroud,Ka'imi Fairbairn,EXTRA POINT KICK,Texans
+13,CJ Stroud,Ka'imi Fairbairn,FIELD GOAL,Texans
+13,Justin Herbert,Cameron Dicker,FIELD GOAL,Chargers
+13,CJ Stroud,Ka'imi Fairbairn,FIELD GOAL,Texans
+13,CJ Stroud,Ka'imi Fairbairn,FIELD GOAL,Texans
+14,Patrick Mahomes,Isiah Pacheco,RUSHING,Chiefs
+14,Patrick Mahomes,Harrison Butker,EXTRA POINT KICK,Chiefs
+14,Tyler Shough,Chris Olave,PASSING,Saints
+14,Tyler Shough,Chris Olave,PASSING,Saints
+14,Tyler Shough,Charlie Smyth,EXTRA POINT KICK,Saints
+14,Patrick Mahomes,Rashee Rice,RUSHING,Chiefs
+14,Patrick Mahomes,Isiah Pacheco,RUSHING,Chiefs
+14,Patrick Mahomes,Harrison Butker,EXTRA POINT KICK,Chiefs
+14,Patrick Mahomes,Isiah Pacheco,PASSING,Chiefs
+14,Patrick Mahomes,Harrison Butker,EXTRA POINT KICK,Chiefs
+14,Patrick Mahomes,Travis Kelce,PASSING,Chiefs
+14,Patrick Mahomes,Harrison Butker,EXTRA POINT KICK,Chiefs
+14,Patrick Mahomes,Harrison Butker,FIELD GOAL,Chiefs
+14,Tyler Shough,Charlie Smyth,FIELD GOAL,Saints
+14,Patrick Mahomes,Harrison Butker,FIELD GOAL,Chiefs
+15,Shedeur Sanders,Nick Chubb,RUSHING,Browns
+15,Baker Mayfield,Chris Godwin,PASSING,Buccaneers
+15,Baker Mayfield,Chase McLaughlin,EXTRA POINT KICK,Buccaneers
+15,Baker Mayfield,Rachaad White,PASSING,Buccaneers
+15,Baker Mayfield,Chase McLaughlin,EXTRA POINT KICK,Buccaneers
+15,Shedeur Sanders,Nick Chubb,RUSHING,Browns
+15,Shedeur Sanders,Andre Szmyt,EXTRA POINT KICK,Browns
+15,Shedeur Sanders,Andre Szmyt,FIELD GOAL,Browns
+15,Baker Mayfield,Chase McLaughlin,FIELD GOAL,Buccaneers
+15,Baker Mayfield,Chase McLaughlin,FIELD GOAL,Buccaneers
+15,Baker Mayfield,Chase McLaughlin,FIELD GOAL,Buccaneers
+16,Sam Darnold,Jaxon Smith-Njigba,RUSHING,Seahawks
+16,Sam Darnold,Jason Myers,EXTRA POINT KICK,Seahawks
+16,Drake Maye,Demario Douglas,PASSING,Patriots
+16,Drake Maye,Andres Borregales,EXTRA POINT KICK,Patriots
+16,Sam Darnold,Kenneth Walker III,PASSING,Seahawks
+16,Sam Darnold,Jason Myers,EXTRA POINT KICK,Seahawks
+16,Sam Darnold,Kenneth Walker III,PASSING,Seahawks
+16,Sam Darnold,Kenneth Walker III,2-POINT CONVERSION,Seahawks
+16,Sam Darnold,DK Metcalf,PASSING,Seahawks
+16,Sam Darnold,DK Metcalf,2-POINT CONVERSION,Seahawks
+16,Sam Darnold,Jaxon Smith-Njigba,PASSING,Seahawks
+16,Sam Darnold,Jason Myers,EXTRA POINT KICK,Seahawks
+16,Drake Maye,Andres Borregales,FIELD GOAL,Patriots
+16,Sam Darnold,Jason Myers,FIELD GOAL,Seahawks
+16,Sam Darnold,Jason Myers,FIELD GOAL,Seahawks
+16,Drake Maye,Andres Borregales,FIELD GOAL,Patriots
+17,Lamar Jackson,Mark Andrews,PASSING,Ravens
+17,Lamar Jackson,Tyler Loop,EXTRA POINT KICK,Ravens
+17,Lamar Jackson,Mark Andrews,PASSING,Ravens
+17,Geno Smith,Jakobi Meyers,RUSHING,Raiders
+17,Lamar Jackson,Mark Andrews,RUSHING,Ravens
+17,Lamar Jackson,Tyler Loop,EXTRA POINT KICK,Ravens
+17,Geno Smith,Josh Jacobs,PASSING,Raiders
+17,Geno Smith,Josh Jacobs,2-POINT CONVERSION,Raiders
+18,Cameron Ward,Calvin Ridley,PASSING,Titans
+18,Cameron Ward,Joey Slye,EXTRA POINT KICK,Titans
+18,Justin Herbert,Austin Ekeler,RUSHING,Chargers
+18,Justin Herbert,Cameron Dicker,EXTRA POINT KICK,Chargers
+18,Justin Herbert,Austin Ekeler,PASSING,Chargers
+18,Justin Herbert,Cameron Dicker,EXTRA POINT KICK,Chargers
+18,Justin Herbert,Keenan Allen,PASSING,Chargers
+18,Justin Herbert,Cameron Dicker,EXTRA POINT KICK,Chargers
+19,Tua Tagovailoa,Jaylen Waddle,PASSING,Dolphins
+19,Tua Tagovailoa,Riley Patterson,EXTRA POINT KICK,Dolphins
+19,Tua Tagovailoa,Jaylen Waddle,PASSING,Dolphins
+19,Tua Tagovailoa,Raheem Mostert,PASSING,Dolphins
+19,Tua Tagovailoa,Riley Patterson,EXTRA POINT KICK,Dolphins
+19,Bryce Young,Diontae Johnson,PASSING,Panthers
+19,Bryce Young,Ryan Fitzgerald,EXTRA POINT KICK,Panthers
+19,Tua Tagovailoa,Tyreek Hill,RUSHING,Dolphins
+19,Tua Tagovailoa,Riley Patterson,EXTRA POINT KICK,Dolphins
+19,Tua Tagovailoa,Tyreek Hill,RUSHING,Dolphins
+19,Tua Tagovailoa,Riley Patterson,EXTRA POINT KICK,Dolphins
+20,Geno Smith,Davante Adams,PASSING,Raiders
+20,Dak Prescott,Brandin Cooks,RUSHING,Cowboys
+20,Dak Prescott,Brandon Aubrey,EXTRA POINT KICK,Cowboys
+20,Geno Smith,Davante Adams,PASSING,Raiders
+20,Geno Smith,Daniel Carlson,EXTRA POINT KICK,Raiders
+20,Dak Prescott,Brandon Aubrey,FIELD GOAL,Cowboys
+20,Dak Prescott,Brandon Aubrey,FIELD GOAL,Cowboys
+21,Justin Herbert,Quentin Johnston,PASSING,Chargers
+21,Justin Herbert,Cameron Dicker,EXTRA POINT KICK,Chargers
+21,Drake Maye,Ja'Lynn Polk,PASSING,Patriots
+21,Drake Maye,Andres Borregales,EXTRA POINT KICK,Patriots
+21,Justin Herbert,Austin Ekeler,RUSHING,Chargers
+21,Justin Herbert,Cameron Dicker,EXTRA POINT KICK,Chargers
+21,Justin Herbert,Keenan Allen,RUSHING,Chargers
+21,Justin Herbert,Cameron Dicker,EXTRA POINT KICK,Chargers
+21,Justin Herbert,Quentin Johnston,PASSING,Chargers
+21,Drake Maye,Rhamondre Stevenson,PASSING,Patriots
+21,Drake Maye,Andres Borregales,EXTRA POINT KICK,Patriots
+21,Justin Herbert,Cameron Dicker,FIELD GOAL,Chargers
+21,Drake Maye,Andres Borregales,FIELD GOAL,Patriots
+21,Drake Maye,Andres Borregales,FIELD GOAL,Patriots
+22,Justin Herbert,Keenan Allen,PASSING,Chargers
+22,Justin Herbert,Cameron Dicker,EXTRA POINT KICK,Chargers
+22,Justin Herbert,Quentin Johnston,PASSING,Chargers
+22,Justin Herbert,Austin Ekeler,RUSHING,Chargers
+22,Justin Herbert,Cameron Dicker,EXTRA POINT KICK,Chargers
+22,Justin Herbert,Keenan Allen,PASSING,Chargers
+22,Justin Herbert,Cameron Dicker,EXTRA POINT KICK,Chargers
+23,JJ McCarthy,Jordan Addison,RUSHING,Vikings
+23,JJ McCarthy,Will Reichard,EXTRA POINT KICK,Vikings
+23,JJ McCarthy,Will Reichard,FIELD GOAL,Vikings
+23,JJ McCarthy,Will Reichard,FIELD GOAL,Vikings
+23,JJ McCarthy,Will Reichard,FIELD GOAL,Vikings
+24,Cameron Ward,Calvin Ridley,PASSING,Titans
+24,Cameron Ward,Joey Slye,EXTRA POINT KICK,Titans
+24,Caleb Williams,D'Andre Swift,PASSING,Bears
+24,Caleb Williams,Cairo Santos,EXTRA POINT KICK,Bears
+24,Cameron Ward,Tony Pollard,PASSING,Titans
+24,Cameron Ward,Joey Slye,EXTRA POINT KICK,Titans
+24,Caleb Williams,D'Andre Swift,PASSING,Bears
+24,Caleb Williams,Cairo Santos,EXTRA POINT KICK,Bears
+24,Cameron Ward,DeAndre Hopkins,PASSING,Titans
+24,Cameron Ward,Joey Slye,EXTRA POINT KICK,Titans
+24,Cameron Ward,Tony Pollard,RUSHING,Titans
+24,Cameron Ward,Tony Pollard,2-POINT CONVERSION,Titans
+25,Kirk Cousins,Drake London,PASSING,Falcons
+25,Kirk Cousins,Zane Gonzalez,EXTRA POINT KICK,Falcons
+25,Joe Flacco,Joe Mixon,PASSING,Bengals
+25,Joe Flacco,Evan McPherson,EXTRA POINT KICK,Bengals
+25,Joe Flacco,Joe Mixon,PASSING,Bengals
+25,Joe Flacco,Evan McPherson,EXTRA POINT KICK,Bengals
+25,Joe Flacco,Tee Higgins,PASSING,Bengals
+25,Joe Flacco,Evan McPherson,EXTRA POINT KICK,Bengals
+25,Joe Flacco,Evan McPherson,FIELD GOAL,Bengals
+25,Joe Flacco,Evan McPherson,FIELD GOAL,Bengals
+25,Joe Flacco,Evan McPherson,FIELD GOAL,Bengals

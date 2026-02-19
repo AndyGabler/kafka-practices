@@ -13,4 +13,4 @@ plugins {
 
 rootProject.name = 'kafka-connect-and-streams-apps'
 include('nfl-score-liquibase')
-include('nfl-result-stream')
+// include('nfl-result-stream')
