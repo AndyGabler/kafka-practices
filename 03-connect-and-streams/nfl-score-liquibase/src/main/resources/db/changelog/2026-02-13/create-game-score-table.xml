@@ -28,9 +28,7 @@
     <changeSet id="2026-02-13-create-game-score-table" author="AndyGabler" runAlways="true">
         <preConditions onFail="CONTINUE">
             <not>
-                <and>
-                    <tableExists tableName="game_score"/>
-                </and>
+                <tableExists tableName="game_score"/>
             </not>
         </preConditions>
         <createTable tableName="game_score">

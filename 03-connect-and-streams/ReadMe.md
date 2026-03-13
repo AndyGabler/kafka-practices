@@ -19,7 +19,7 @@ http://localhost:8083/connectors/postgres-connector
 ```ps
 docker exec -it kafka bash
 ```
-e
+
 ```sh
 kafka-topics --bootstrap-server localhost:29092 --list
 ```

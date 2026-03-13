@@ -5,5 +5,4 @@
 
     <include file="create-game-score-table.xml" relativeToChangelogFile="true"/>
     <include file="enable-cdc-and-enable-debezium.xml" relativeToChangelogFile="true"/>
-    <include file="initial-data-insert.xml" relativeToChangelogFile="true"/>
 </databaseChangeLog>

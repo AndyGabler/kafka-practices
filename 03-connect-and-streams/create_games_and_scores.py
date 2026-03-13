@@ -1,15 +1,24 @@
 from datetime import date
+from datetime import datetime
 from datetime import timedelta
+import json
 import random
-
-games_file = open("./src/main/resources/db/changelog/2026-02-13/games.csv", 'w')
-scores_file = open("./src/main/resources/db/changelog/2026-02-13/scores.csv", 'w')
+import requests
 
 game_count = 25
 touchdowns_per_game = 4
 field_goals_per_game = 2
 
 game_date = date.fromisoformat("2025-09-07")
+try:
+    api_response = json.loads(requests.get("http://localhost:8084/game?page=0&sort=matchDate,desc").text)
+    if "content" in api_response and len(api_response["content"]) > 0 and "matchDate" in api_response["content"][0]:
+        game_date = datetime.strptime(api_response["content"][0]["matchDate"], "%y-%m-%d") + timedelta(days=5)
+        print("using week after latest game date.", game_date.isoformat())
+    else:
+        print("using default date of", game_date.isoformat())
+except:
+    print("unable to determine current game date so using default of", game_date.isoformat())
 
 teams = [
     {
@@ -213,44 +222,61 @@ while len(games) < game_count:
         game_date = game_date + timedelta(days=5)
     visiting_team = teams[random.randint(0, len(teams) - 1)]
     home_team = teams[random.randint(0, len(teams) - 1)]
-    
+
     if visiting_team["name"] == home_team["name"]:
         continue
-    
+
     game_id = str(len(games) + 1)
     games.append([game_id, game_date.isoformat(), home_team["name"], visiting_team["name"]])
-    
+
     touchdowns_to_add = touchdowns_per_game + random.randint(-3, 3)
     field_goals_to_add = field_goals_per_game + random.randint(-2, 2)
-    
+
     while touchdowns_to_add > 0:
         team = random.choice([visiting_team, home_team])
         snap_type = random.choice(["PASSING", "RUSHING"])
         ball_carrier = random.choice(team["receivers"])
-        
+
         score_to_add = [game_id, team["quarterback"], ball_carrier, snap_type, team["name"]]
         scores.append(score_to_add)
-        
+
         conversion_type = random.choices(["EXTRA POINT KICK", "NO POINT", "2-POINT CONVERSION"], weights=[80, 15, 5], k=1)[0]
         if conversion_type == "EXTRA POINT KICK":
             scores.append([game_id, team["quarterback"], team["kicker"], conversion_type, team["name"]])
         elif conversion_type == "2-POINT CONVERSION":
             scores.append([game_id, team["quarterback"], ball_carrier, conversion_type, team["name"]])
-        
+
         touchdowns_to_add -= 1
-    
+
     while field_goals_to_add > 0:
         team = random.choice([visiting_team, home_team])
         scores.append([game_id, team["quarterback"], team["kicker"], "FIELD GOAL", team["name"]])
-        
+
         field_goals_to_add -= 1
 
-games_csv_text = "id,matchDate,visitingTeam,homeTeam"
 for game in games:
-    games_csv_text = games_csv_text + "\n" + game[0] + "," + game[1] + "," + game[2] + "," + game[3]
-games_file.write(games_csv_text)
+    payload = {
+        "matchDate": game[1],
+        "homeTeam": game[2],
+        "visitingTeam": game[3]
+    }
+    print("posting game", payload)
+    response = requests.post("http://localhost:8084/game", json=payload).json()
+    print(response)
+    game_id = response["id"]
+    print("game created with id", game_id)
+    for score in scores:
+        # If score game id matches the game id, it gets posted.
+        if score[0] != game[0]:
+            continue
+        payload = {
+            "footballGameId": game_id,
+            "quarterback": score[1],
+            "ballCarrier": score[2],
+            "snapType": score[3],
+            "team": score[4]
+        }
+        print("posting score", payload)
+        requests.post("http://localhost:8084/score", json=payload)
 
-scores_csv_text = "gameId,quarterback,ballCarrier,snapType,team"
-for score in scores:
-    scores_csv_text = scores_csv_text + "\n" + score[0] + "," + score[1] + "," + score[2] + "," + score[3] + "," + score[4]
-scores_file.write(scores_csv_text)
+    
