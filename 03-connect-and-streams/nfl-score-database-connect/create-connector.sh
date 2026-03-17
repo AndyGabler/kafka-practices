@@ -11,6 +11,7 @@ curl -X POST http://localhost:8083/connectors \
           "database.dbname": "NFLScoreDatabase",
           "database.server.name": "nflscoredatabase",
           "topic.prefix": "nflscoredatabase",
-          "plugin.name": "pgoutput"
+          "plugin.name": "pgoutput",
+          "topic.creation.default.retention.ms": -1
         }
       }'

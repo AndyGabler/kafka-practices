@@ -1,0 +1,9 @@
+spring:
+  kafka:
+    bootstrap-servers: localhost:9092
+    streams:
+      application-id: nfl-score-streams-v1
+      auto-startup: true
+      properties:
+        default.key.serde: org.apache.kafka.common.serialization.Serdes$StringSerde
+        default.value.serde: org.apache.kafka.common.serialization.Serdes$StringSerde
