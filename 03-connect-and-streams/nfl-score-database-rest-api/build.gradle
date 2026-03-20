@@ -24,6 +24,10 @@ dependencies {
     testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
 }
 
+bootJar {
+    mainClass = 'io.github.andygabler.nflscorerestapi.NflScoreRestAPIApplication'
+}
+
 tasks.named('test') {
     useJUnitPlatform()
 }

@@ -21,6 +21,10 @@ dependencies {
 	testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
 }
 
+bootJar {
+	mainClass = 'io.github.andygabler.nflscoreliquibase.NflScoreDatabaseApplication'
+}
+
 tasks.named('test') {
 	useJUnitPlatform()
 }

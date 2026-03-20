@@ -11,25 +11,33 @@
             "field":"id"
           },
           {
-            "type":"int32",
+            "type":"int64",
             "optional":false,
-            "name":"io.debezium.time.Date",
-            "version":1,
-            "field":"match_date"
+            "field":"football_game_id"
           },
           {
             "type":"string",
             "optional":false,
-            "field":"home_team"
+            "field":"quarterback"
+          },
+          {
+            "type":"string",
+            "optional":true,
+            "field":"ball_carrier"
           },
           {
             "type":"string",
             "optional":false,
-            "field":"visiting_team"
+            "field":"snap_type"
+          },
+          {
+            "type":"string",
+            "optional":false,
+            "field":"team"
           }
         ],
         "optional":true,
-        "name":"nflscoredatabase.public.football_game.Value",
+        "name":"nflscoredatabase.public.game_score.Value",
         "field":"before"
       },
       {
@@ -41,25 +49,33 @@
             "field":"id"
           },
           {
-            "type":"int32",
+            "type":"int64",
             "optional":false,
-            "name":"io.debezium.time.Date",
-            "version":1,
-            "field":"match_date"
+            "field":"football_game_id"
           },
           {
             "type":"string",
             "optional":false,
-            "field":"home_team"
+            "field":"quarterback"
+          },
+          {
+            "type":"string",
+            "optional":true,
+            "field":"ball_carrier"
           },
           {
             "type":"string",
             "optional":false,
-            "field":"visiting_team"
+            "field":"snap_type"
+          },
+          {
+            "type":"string",
+            "optional":false,
+            "field":"team"
           }
         ],
         "optional":true,
-        "name":"nflscoredatabase.public.football_game.Value",
+        "name":"nflscoredatabase.public.game_score.Value",
         "field":"after"
       },
       {
@@ -172,33 +188,35 @@
       }
     ],
     "optional":false,
-    "name":"nflscoredatabase.public.football_game.Envelope",
+    "name":"nflscoredatabase.public.game_score.Envelope",
     "version":1
   },
   "payload":{
     "before":null,
     "after":{
-      "id":1,
-      "match_date":20338,
-      "home_team":"Chiefs",
-      "visiting_team":"Vikings"
+      "id":363,
+      "football_game_id":14,
+      "quarterback":"Joe Flacco",
+      "ball_carrier":"Evan McPherson",
+      "snap_type":"EXTRA POINT KICK",
+      "team":"Bengals"
     },
     "source":{
       "version":"2.5.4.Final",
       "connector":"postgresql",
       "name":"nflscoredatabase",
-      "ts_ms":1771464141028,
-      "snapshot":"first_in_data_collection",
+      "ts_ms":1773361124325,
+      "snapshot":"false",
       "db":"NFLScoreDatabase",
-      "sequence":"[null,\"27220648\"]",
+      "sequence":"[\"27334536\",\"27334536\"]",
       "schema":"public",
-      "table":"football_game",
-      "txId":765,
-      "lsn":27220648,
+      "table":"game_score",
+      "txId":895,
+      "lsn":27334536,
       "xmin":null
     },
-    "op":"r",
-    "ts_ms":1771464141249,
+    "op":"c",
+    "ts_ms":1773361124620,
     "transaction":null
   }
 }
