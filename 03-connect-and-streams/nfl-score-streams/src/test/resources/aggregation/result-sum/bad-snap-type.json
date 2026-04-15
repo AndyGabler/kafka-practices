@@ -1,0 +1,16 @@
+{
+  "id": 1,
+  "match_date": 20383,
+  "home_team": "Titans",
+  "visiting_team": "Bengals",
+  "scores": [
+    {
+      "id": 233,
+      "football_game_id": 1,
+      "quarterback": "Jared Goff",
+      "ball_carrier": "Sam LaPorta",
+      "snap_type": "NO POINT",
+      "team": "Bengals"
+    }
+  ]
+}

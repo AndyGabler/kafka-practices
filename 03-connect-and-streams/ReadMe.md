@@ -16,16 +16,36 @@ http://localhost:8083/connector-plugins
 http://localhost:8083/connectors
 http://localhost:8083/connectors/postgres-connector
 
+
+## Helpful Local Development Debug Commands
+
+Use PowerShell to get into the Kafka broker.
 ```ps
 docker exec -it kafka bash
 ```
+
+Command to list topics.
 ```sh
 kafka-topics --bootstrap-server localhost:29092 --list
 ```
+
+Consume single message from a topic.
 ```sh
 kafka-console-consumer \
   --bootstrap-server localhost:29092 \
   --topic nflscoredatabase.public.football_game \
   --from-beginning \
   --max-messages 1
+```
+
+Drop all messages on all topics (set back to -1 to keep retaining all)
+```sh
+for topic in $(kafka-topics.sh --bootstrap-server localhost:9092 --list | grep nflscoredatabase); do
+   kafka-configs.sh \
+     --bootstrap-server localhost:9092 \
+     --entity-type topics \
+     --entity-name $topic \
+     --alter \
+     --add-config retention.ms=1
+ done
 ```

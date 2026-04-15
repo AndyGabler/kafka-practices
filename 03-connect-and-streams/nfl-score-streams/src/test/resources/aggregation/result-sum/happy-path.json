@@ -1,0 +1,56 @@
+{
+  "id": 1,
+  "match_date": 20383,
+  "home_team": "Packers",
+  "visiting_team": "Lions",
+  "scores": [
+    {
+      "id": 233,
+      "football_game_id": 1,
+      "quarterback": "Jared Goff",
+      "ball_carrier": "Sam LaPorta",
+      "snap_type": "PASSING",
+      "team": "Lions"
+    },
+    {
+      "id": 235,
+      "football_game_id": 1,
+      "quarterback": "Jared Goff",
+      "ball_carrier": "Jake Bates",
+      "snap_type": "EXTRA POINT KICK",
+      "team": "Lions"
+    },
+    {
+      "id": 238,
+      "football_game_id": 1,
+      "quarterback": "Jared Goff",
+      "ball_carrier": "Jahmyr Gibbs",
+      "snap_type": "RUSHING",
+      "team": "Lions"
+    },
+    {
+      "id": 238,
+      "football_game_id": 1,
+      "quarterback": "Jared Goff",
+      "ball_carrier": "Jahmyr Gibbs",
+      "snap_type": "RUSHING",
+      "team": "Lions"
+    },
+    {
+      "id": 239,
+      "football_game_id": 1,
+      "quarterback": "Jared Goff",
+      "ball_carrier": "Jahmyr Gibbs",
+      "snap_type": "2-POINT CONVERSION",
+      "team": "Lions"
+    },
+    {
+      "id": 241,
+      "football_game_id": 1,
+      "quarterback": "Jordan Love",
+      "ball_carrier": "Brandon McManus",
+      "snap_type": "FIELD GOAL",
+      "team": "Packers"
+    }
+  ]
+}

@@ -19,17 +19,12 @@ public class StreamsTopology {
         gameRekeyStreamMaker.buildPipeline(streamsBuilder);
 
         /*
-         * Re-Key games. Simply parse out the key from Struct{id=2} to integer 2.
+         * You will want a Left Join stream.
+         * Emits an output for each record in the left or primary input source.
+         * If the other source does not have a value for a given key, it is set to null.
+         *
+         * We know a football game will exist first so never can be null if it is on the right. The left source will
+         * be the game score
          */
-        /*final KStream<String, String> gameRekeyStream = streamsBuilder
-            .stream(
-            "nflscoredatabase.public.football_game",
-                Consumed.with(Serdes.String(), Serdes.String())
-            );
-        gameRekeyStream
-            .mapValues((key, value) ->
-                KeyValue.pair(RekeyUtil.parseDebeziumKey(key), value)
-            ).to("streams.football_game.rekey");*/
-
     }
 }

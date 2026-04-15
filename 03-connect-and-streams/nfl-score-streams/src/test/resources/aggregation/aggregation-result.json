@@ -1,0 +1,16 @@
+{
+  "id": 26,
+  "match_date": 20383,
+  "home_team": "Bills",
+  "visiting_team": "Bengals",
+  "scores": [
+    {
+      "id": 233,
+      "football_game_id": 26,
+      "quarterback": "Joe Flacco",
+      "ball_carrier": "Evan McPherson",
+      "snap_type": "EXTRA POINT KICK",
+      "team": "Bengals"
+    }
+  ]
+}
