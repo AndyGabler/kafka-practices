@@ -1,0 +1,8 @@
+{
+  "id": 2,
+  "football_game_id": 1,
+  "quarterback": "JJ McCarthy",
+  "ball_carrier": "Jordan Addison",
+  "snap_type": "PASSING",
+  "team": "Vikings"
+}

@@ -1,6 +1,6 @@
 spring:
   kafka:
-    bootstrap-servers: localhost:9092
+    bootstrap-servers: my-kafka-server
     streams:
       application-id: nfl-score-streams-v2
       auto-startup: true

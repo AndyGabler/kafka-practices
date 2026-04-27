@@ -3,10 +3,12 @@ package io.github.andygabler.nflscorestreams.rekey;
 import io.github.andygabler.nflscorestreams.StreamMaker;
 import io.github.andygabler.nflscorestreams.util.DebeziumCreateOnlyFilter;
 import io.github.andygabler.nflscorestreams.util.JsonNodeFlatMapper;
+import io.github.andygabler.nflscorestreams.util.JsonNodeToStringMapper;
 import org.apache.kafka.common.serialization.Serdes;
 import org.apache.kafka.streams.StreamsBuilder;
 import org.apache.kafka.streams.kstream.Consumed;
 import org.apache.kafka.streams.kstream.KStream;
+import org.apache.kafka.streams.kstream.Produced;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -28,7 +30,7 @@ public class ScoreRekeyStreamMaker implements StreamMaker {
     private ScoreRekeyMapper scoreRekeyMapper;
 
     @Autowired
-    private DebeziumPayloadExtractionMapper debeziumPayloadExtractionMapper;
+    private JsonNodeToStringMapper jsonNodeToStringMapper;
 
     @Override
     public void buildPipeline(StreamsBuilder streamsBuilder) {
@@ -41,7 +43,7 @@ public class ScoreRekeyStreamMaker implements StreamMaker {
             .flatMap(new JsonNodeFlatMapper<>())
             .filter(debeziumCreateOnlyFilter)
             .map(scoreRekeyMapper)
-            .mapValues(debeziumPayloadExtractionMapper)
-            .to("nflscoredatabase.public.game_score.rekey");
+            .mapValues(jsonNodeToStringMapper)
+            .to("nflscoredatabase.public.game_score.rekey", Produced.with(Serdes.Long(), Serdes.String()));
     }
 }

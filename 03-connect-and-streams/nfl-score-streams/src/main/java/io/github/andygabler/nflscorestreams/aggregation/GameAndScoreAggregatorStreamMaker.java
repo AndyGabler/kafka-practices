@@ -1,12 +1,11 @@
 package io.github.andygabler.nflscorestreams.aggregation;
 
 import io.github.andygabler.nflscorestreams.StreamMaker;
+import io.github.andygabler.nflscorestreams.util.JsonNodeFlatMapper;
+import io.github.andygabler.nflscorestreams.util.JsonNodeToStringMapper;
 import org.apache.kafka.common.serialization.Serdes;
 import org.apache.kafka.streams.StreamsBuilder;
-import org.apache.kafka.streams.kstream.Consumed;
-import org.apache.kafka.streams.kstream.KStream;
-import org.apache.kafka.streams.kstream.KTable;
-import org.apache.kafka.streams.kstream.Materialized;
+import org.apache.kafka.streams.kstream.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -18,6 +17,9 @@ public class GameAndScoreAggregatorStreamMaker implements StreamMaker {
 
     @Autowired
     private GameResultSumMapper gameResultSumMapper;
+
+    @Autowired
+    private JsonNodeToStringMapper jsonNodeToStringMapper;
 
     @Override
     public void buildPipeline(StreamsBuilder streamsBuilder) {
@@ -40,7 +42,20 @@ public class GameAndScoreAggregatorStreamMaker implements StreamMaker {
          */
         scoreRekeyStream
             .leftJoin(gameRekeyTable, gameAndScoreAggregatorJoiner)
+            .mapValues(jsonNodeToStringMapper)
+            .to("nflscoredatabase.public.score_and_game_join", Produced.with(Serdes.Long(), Serdes.String()));
+
+        // TODO could be ktable
+        final KStream<Long, String> joinStream = streamsBuilder
+            .stream(
+                "nflscoredatabase.public.score_and_game_join",
+                Consumed.with(Serdes.Long(), Serdes.String())
+            );
+
+        joinStream
+            .flatMap(new JsonNodeFlatMapper<>())
             .mapValues(gameResultSumMapper)
-            .to("nflscoredatabase.sink.game_result");
+            .mapValues(jsonNodeToStringMapper)
+            .to("nflscoredatabase.sink.game_result", Produced.with(Serdes.Long(), Serdes.String()));
     }
 }

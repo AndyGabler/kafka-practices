@@ -1,0 +1,8 @@
+{
+  "id": 4,
+  "football_game_id": 1,
+  "quarterback": "Cameron Ward",
+  "ball_carrier": "DeAndre Hopkins",
+  "snap_type": "RUSHING",
+  "team": "Titans"
+}

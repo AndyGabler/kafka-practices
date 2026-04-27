@@ -5,6 +5,14 @@
   "visiting_team": "Bengals",
   "scores": [
     {
+      "id":232,
+      "football_game_id":26,
+      "quarterback":"Joe Flacco",
+      "ball_carrier":"Tee Higgins",
+      "snap_type":"RUSHING",
+      "team":"Bengals"
+    },
+    {
       "id": 233,
       "football_game_id": 26,
       "quarterback": "Joe Flacco",
