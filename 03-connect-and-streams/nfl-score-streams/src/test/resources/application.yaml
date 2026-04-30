@@ -7,7 +7,3 @@ spring:
       properties:
         default.key.serde: org.apache.kafka.common.serialization.Serdes$StringSerde
         default.value.serde: org.apache.kafka.common.serialization.Serdes$StringSerde
-nfl-streams-application:
-  error-handling:
-    retry-delay-millis: 5000
-    max-attempts: 4

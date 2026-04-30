@@ -7,20 +7,24 @@ import lombok.SneakyThrows;
 import org.apache.kafka.streams.kstream.ValueJoiner;
 import org.springframework.stereotype.Component;
 
+import java.util.List;
+
 @Component
 public class GameAndScoreAggregatorJoiner implements ValueJoiner<String, String, JsonNode> {
     @SneakyThrows
     @Override
-    public JsonNode apply(String scoreRekeyRecord, String gameRekeyRecord) {
-        if (gameRekeyRecord == null) {
-            throw new AggregationException("gameRekeyRecord was null. Indicating a late arriving value.");
-        }
-
+    public JsonNode apply(String gameRekeyRecord, String scoreAggregateRecord) {
         final ObjectMapper objectMapper = new ObjectMapper();
-        final JsonNode scoreRekeyJson = objectMapper.readTree(scoreRekeyRecord);
         final JsonNode gameRekeyJson = objectMapper.readTree(gameRekeyRecord);
 
-        ((ArrayNode) gameRekeyJson.get("scores")).add(scoreRekeyJson);
+        if (scoreAggregateRecord == null) {
+            return gameRekeyJson;
+        }
+
+        final ArrayNode scoreArray = new ObjectMapper().readValue(scoreAggregateRecord, ArrayNode.class);
+        scoreArray.forEach(scoreRekeyJson -> {
+            ((ArrayNode) gameRekeyJson.get("scores")).add(scoreRekeyJson);
+        });
         return gameRekeyJson;
     }
 }

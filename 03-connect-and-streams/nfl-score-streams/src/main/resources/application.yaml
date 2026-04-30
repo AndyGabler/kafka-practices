@@ -1,13 +1,11 @@
 spring:
   kafka:
     bootstrap-servers: localhost:9092
+    admin:
+      auto-create: true
     streams:
       application-id: nfl-score-streams-v2
       auto-startup: true
       properties:
         default.key.serde: org.apache.kafka.common.serialization.Serdes$StringSerde
         default.value.serde: org.apache.kafka.common.serialization.Serdes$StringSerde
-nfl-streams-application:
-  error-handling:
-    retry-delay-millis: 5000
-    max-attempts: 4

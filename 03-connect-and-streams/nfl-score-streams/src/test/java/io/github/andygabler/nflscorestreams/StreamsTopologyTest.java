@@ -1,47 +1,25 @@
 package io.github.andygabler.nflscorestreams;
 
-import org.apache.kafka.clients.consumer.Consumer;
-import org.apache.kafka.clients.consumer.ConsumerConfig;
-import org.apache.kafka.clients.consumer.ConsumerRecord;
-import org.apache.kafka.clients.consumer.ConsumerRecords;
-import org.apache.kafka.common.serialization.LongDeserializer;
-import org.apache.kafka.common.serialization.StringDeserializer;
+import org.apache.kafka.common.serialization.Serdes;
+import org.apache.kafka.streams.*;
+import org.apache.kafka.streams.test.TestRecord;
 import org.json.JSONException;
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.skyscreamer.jsonassert.JSONAssert;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.kafka.core.DefaultKafkaConsumerFactory;
-import org.springframework.kafka.core.KafkaTemplate;
-import org.springframework.kafka.test.EmbeddedKafkaBroker;
-import org.springframework.kafka.test.context.EmbeddedKafka;
-import org.springframework.kafka.test.utils.KafkaTestUtils;
-import org.springframework.test.annotation.DirtiesContext;
 
 import java.io.IOException;
 import java.net.URISyntaxException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
-import java.util.Iterator;
-import java.util.Map;
-import java.util.Objects;
-import java.util.UUID;
-import java.util.stream.Collectors;
+import java.util.*;
 
-@SpringBootTest
-@DirtiesContext // todo don't think this is needed
-@EmbeddedKafka(
-    partitions = 1,
-    topics = {
-        "nflscoredatabase.public.football_game",
-        "nflscoredatabase.public.football_game.rekey",
-        "nflscoredatabase.public.game_score",
-        "nflscoredatabase.public.game_score.rekey",
-        "nflscoredatabase.public.score_and_game_join",
-        "nflscoredatabase.sink.game_result"
-    }
+@SpringBootTest(
+    "spring.kafka.streams.auto-startup=false"
 )
 public class StreamsTopologyTest {
 
@@ -53,135 +31,157 @@ public class StreamsTopologyTest {
     private static final String GAME_SCORE_JOIN_TOPIC = "nflscoredatabase.public.score_and_game_join";
 
     @Autowired
-    private EmbeddedKafkaBroker broker;
-    @Autowired
-    private KafkaTemplate<String, String> kafkaTemplate;
-    private Consumer<Long, String> gameRekeyTopicConsumer;
-    private Consumer<Long, String> scoreRekeyTopicConsumer;
-    private Consumer<Long, String> gameAndScoreJoinConsumer;
-    private Consumer<Long, String> gameResultTopicConsumer;
+    private StreamsTopology streamsTopology;
+
+    private TopologyTestDriver topologyDriver;
+
+    private TestInputTopic<String, String> gameTopic;
+    private TestInputTopic<String, String> scoreTopic;
+    private TestOutputTopic<Long, String> gameRekeyTopic;
+    private TestOutputTopic<Long, String> scoreRekeyTopic;
+    private TestOutputTopic<Long, String> gameAndScoreJoin;
+    private TestOutputTopic<Long, String> gameResultTopic;
 
     @BeforeEach
     public void setup() {
-        gameRekeyTopicConsumer = createConsumer();
-        scoreRekeyTopicConsumer = createConsumer();
-        gameAndScoreJoinConsumer = createConsumer();
-        gameResultTopicConsumer = createConsumer();
+        final StreamsBuilder builder = new StreamsBuilder();
+        streamsTopology.buildPipeline(builder);
+        final Topology topology = builder.build();
+        final Properties properties = new Properties();
+        properties.put(StreamsConfig.APPLICATION_ID_CONFIG, UUID.randomUUID().toString());
+        properties.put(StreamsConfig.BOOTSTRAP_SERVERS_CONFIG, "dummy:1234");
+        properties.put(StreamsConfig.DEFAULT_KEY_SERDE_CLASS_CONFIG, Serdes.Long().getClass());
+        properties.put(StreamsConfig.DEFAULT_VALUE_SERDE_CLASS_CONFIG, Serdes.String().getClass());
 
-        broker.consumeFromAnEmbeddedTopic(
-            gameRekeyTopicConsumer, GAME_REKEY_TOPIC
-        );
-        broker.consumeFromAnEmbeddedTopic(
-            scoreRekeyTopicConsumer, SCORE_REKEY_TOPIC
-        );
-        broker.consumeFromAnEmbeddedTopic(
-            gameAndScoreJoinConsumer, GAME_SCORE_JOIN_TOPIC
-        );
-        broker.consumeFromAnEmbeddedTopic(
-            gameResultTopicConsumer, RESULT_TOPIC
-        );
+        topologyDriver = new TopologyTestDriver(topology, properties);
+
+        gameTopic = topologyDriver.createInputTopic(GAME_TOPIC, Serdes.String().serializer(), Serdes.String().serializer());
+        scoreTopic = topologyDriver.createInputTopic(SCORE_TOPIC, Serdes.String().serializer(), Serdes.String().serializer());
+        gameRekeyTopic = topologyDriver.createOutputTopic(GAME_REKEY_TOPIC, Serdes.Long().deserializer(), Serdes.String().deserializer());
+        scoreRekeyTopic = topologyDriver.createOutputTopic(SCORE_REKEY_TOPIC, Serdes.Long().deserializer(), Serdes.String().deserializer());
+        gameAndScoreJoin = topologyDriver.createOutputTopic(GAME_SCORE_JOIN_TOPIC, Serdes.Long().deserializer(), Serdes.String().deserializer());
+        gameResultTopic = topologyDriver.createOutputTopic(RESULT_TOPIC, Serdes.Long().deserializer(), Serdes.String().deserializer());
+
     }
 
-    private Consumer<Long, String> createConsumer() {
-        final Map<String, Object> consumerProperties = KafkaTestUtils
-                .consumerProps(broker, UUID.randomUUID().toString(), true);
-        consumerProperties.put(ConsumerConfig.KEY_DESERIALIZER_CLASS_CONFIG, LongDeserializer.class);
-        consumerProperties.put(ConsumerConfig.VALUE_DESERIALIZER_CLASS_CONFIG, StringDeserializer.class);
-        return new DefaultKafkaConsumerFactory<Long, String>(consumerProperties).createConsumer();
+    @AfterEach
+    public void cleanup() {
+        topologyDriver.close();
     }
 
     @Test
     public void testScoreAggregationPipeline() throws IOException, URISyntaxException, InterruptedException, JSONException {
-        kafkaTemplate.send(GAME_TOPIC, "Struct{id=1}", getPayload("/topology-test/debezium-game-messages/game1.json"));
-        // TODO throw this one on the end for funsies
-        kafkaTemplate.send(GAME_TOPIC, "Struct{id=2}", getPayload("/topology-test/debezium-game-messages/game2.json"));
+        gameTopic.pipeInput("Struct{id=1}", getPayload("/topology-test/debezium-game-messages/game1.json"));
+        gameTopic.pipeInput("Struct{id=2}", getPayload("/topology-test/debezium-game-messages/game2.json"));
 
-        kafkaTemplate.send(SCORE_TOPIC, "Struct{id=1}", getPayload("/topology-test/debezium-score-messages/score1.json"));
-        kafkaTemplate.send(SCORE_TOPIC, "Struct{id=2}", getPayload("/topology-test/debezium-score-messages/score2.json"));
-        kafkaTemplate.send(SCORE_TOPIC, "Struct{id=3}", getPayload("/topology-test/debezium-score-messages/score3.json"));
-        kafkaTemplate.send(SCORE_TOPIC, "Struct{id=4}", getPayload("/topology-test/debezium-score-messages/score4.json"));
-        kafkaTemplate.send(SCORE_TOPIC, "Struct{id=5}", getPayload("/topology-test/debezium-score-messages/score5.json"));
-        kafkaTemplate.send(SCORE_TOPIC, "Struct{id=6}", getPayload("/topology-test/debezium-score-messages/score6.json"));
-        kafkaTemplate.send(SCORE_TOPIC, "Struct{id=7}", getPayload("/topology-test/debezium-score-messages/score7.json"));
+        scoreTopic.pipeInput("Struct{id=1}", getPayload("/topology-test/debezium-score-messages/score1.json"));
+        scoreTopic.pipeInput("Struct{id=2}", getPayload("/topology-test/debezium-score-messages/score2.json"));
+        scoreTopic.pipeInput("Struct{id=3}", getPayload("/topology-test/debezium-score-messages/score3.json"));
+        scoreTopic.pipeInput("Struct{id=4}", getPayload("/topology-test/debezium-score-messages/score4.json"));
+        scoreTopic.pipeInput("Struct{id=5}", getPayload("/topology-test/debezium-score-messages/score5.json"));
+        scoreTopic.pipeInput("Struct{id=6}", getPayload("/topology-test/debezium-score-messages/score6.json"));
+        scoreTopic.pipeInput("Struct{id=7}", getPayload("/topology-test/debezium-score-messages/score7.json"));
 
-        kafkaTemplate.send(SCORE_TOPIC, "Struct{id=8}", getPayload("/topology-test/debezium-score-messages/score8.json"));
-        kafkaTemplate.send(SCORE_TOPIC, "Struct{id=9}", getPayload("/topology-test/debezium-score-messages/score9.json"));
-        kafkaTemplate.send(SCORE_TOPIC, "Struct{id=10}", getPayload("/topology-test/debezium-score-messages/score10.json"));
-        kafkaTemplate.send(SCORE_TOPIC, "Struct{id=11}", getPayload("/topology-test/debezium-score-messages/score11.json"));
-
-        kafkaTemplate.flush();
-
-        // Thread.sleep(10000L);
+        scoreTopic.pipeInput("Struct{id=8}", getPayload("/topology-test/debezium-score-messages/score8.json"));
+        scoreTopic.pipeInput("Struct{id=9}", getPayload("/topology-test/debezium-score-messages/score9.json"));
+        scoreTopic.pipeInput("Struct{id=10}", getPayload("/topology-test/debezium-score-messages/score10.json"));
+        scoreTopic.pipeInput("Struct{id=11}", getPayload("/topology-test/debezium-score-messages/score11.json"));
 
         // Verify Game Rekeys
-        final ConsumerRecords<Long, String> gameRekeyRecords = KafkaTestUtils.getRecords(gameRekeyTopicConsumer);
-        Assertions.assertEquals(2, gameRekeyRecords.count());
-
-        final Iterator<ConsumerRecord<Long, String>> gameRekeyRecordsIterable = gameRekeyRecords.records(GAME_REKEY_TOPIC).iterator();
-        final ConsumerRecord<Long, String> gameRekeyRecord0 = gameRekeyRecordsIterable.next();
+        final List<TestRecord<Long, String>> gameRekeyRecords = gameRekeyTopic.readRecordsToList();
+        Assertions.assertEquals(2, gameRekeyRecords.size());
+        
+        final TestRecord<Long, String> gameRekeyRecord0 = gameRekeyRecords.get(0);
         Assertions.assertEquals(1L, gameRekeyRecord0.key());
         JSONAssert.assertEquals(getPayload("/topology-test/game-rekeys/message1.json"), gameRekeyRecord0.value(), false);
 
-        final ConsumerRecord<Long, String> gameRekeyRecord1 = gameRekeyRecordsIterable.next();
+        final TestRecord<Long, String> gameRekeyRecord1 = gameRekeyRecords.get(1);
         Assertions.assertEquals(2L, gameRekeyRecord1.key());
         JSONAssert.assertEquals(getPayload("/topology-test/game-rekeys/message2.json"), gameRekeyRecord1.value(), false);
 
         // Verify Score Rekeys
-        final ConsumerRecords<Long, String> scoreRekeyRecords = KafkaTestUtils.getRecords(scoreRekeyTopicConsumer);
-        Assertions.assertEquals(11, scoreRekeyRecords.count());
-
-        final Iterator<ConsumerRecord<Long, String>> scoreRekeyRecordsIterable = scoreRekeyRecords.records(SCORE_REKEY_TOPIC).iterator();
-        final ConsumerRecord<Long, String> scoreRekeyRecord0 = scoreRekeyRecordsIterable.next();
+        final List<TestRecord<Long, String>> scoreRekeyRecords = scoreRekeyTopic.readRecordsToList();
+        Assertions.assertEquals(11, scoreRekeyRecords.size());
+        
+        final TestRecord<Long, String> scoreRekeyRecord0 = scoreRekeyRecords.get(0);
         Assertions.assertEquals(1L, scoreRekeyRecord0.key());
         JSONAssert.assertEquals(getPayload("/topology-test/score-rekeys/message1.json"), scoreRekeyRecord0.value(), false);
 
-        final ConsumerRecord<Long, String> scoreRekeyRecord1 = scoreRekeyRecordsIterable.next();
+        final TestRecord<Long, String> scoreRekeyRecord1 = scoreRekeyRecords.get(1);
         Assertions.assertEquals(1L, scoreRekeyRecord1.key());
         JSONAssert.assertEquals(getPayload("/topology-test/score-rekeys/message2.json"), scoreRekeyRecord1.value(), false);
 
-        final ConsumerRecord<Long, String> scoreRekeyRecord2 = scoreRekeyRecordsIterable.next();
+        final TestRecord<Long, String> scoreRekeyRecord2 = scoreRekeyRecords.get(2);
         Assertions.assertEquals(1L, scoreRekeyRecord2.key());
         JSONAssert.assertEquals(getPayload("/topology-test/score-rekeys/message3.json"), scoreRekeyRecord2.value(), false);
 
-        final ConsumerRecord<Long, String> scoreRekeyRecord3 = scoreRekeyRecordsIterable.next();
+        final TestRecord<Long, String> scoreRekeyRecord3 = scoreRekeyRecords.get(3);
         Assertions.assertEquals(1L, scoreRekeyRecord3.key());
         JSONAssert.assertEquals(getPayload("/topology-test/score-rekeys/message4.json"), scoreRekeyRecord3.value(), false);
 
-        final ConsumerRecord<Long, String> scoreRekeyRecord4 = scoreRekeyRecordsIterable.next();
+        final TestRecord<Long, String> scoreRekeyRecord4 = scoreRekeyRecords.get(4);
         Assertions.assertEquals(1L, scoreRekeyRecord4.key());
         JSONAssert.assertEquals(getPayload("/topology-test/score-rekeys/message5.json"), scoreRekeyRecord4.value(), false);
 
-        final ConsumerRecord<Long, String> scoreRekeyRecord5 = scoreRekeyRecordsIterable.next();
+        final TestRecord<Long, String> scoreRekeyRecord5 = scoreRekeyRecords.get(5);
         Assertions.assertEquals(1L, scoreRekeyRecord5.key());
         JSONAssert.assertEquals(getPayload("/topology-test/score-rekeys/message6.json"), scoreRekeyRecord5.value(), false);
 
-        final ConsumerRecord<Long, String> scoreRekeyRecord6 = scoreRekeyRecordsIterable.next();
+        final TestRecord<Long, String> scoreRekeyRecord6 = scoreRekeyRecords.get(6);
         Assertions.assertEquals(1L, scoreRekeyRecord6.key());
         JSONAssert.assertEquals(getPayload("/topology-test/score-rekeys/message7.json"), scoreRekeyRecord6.value(), false);
 
-        final ConsumerRecord<Long, String> scoreRekeyRecord7 = scoreRekeyRecordsIterable.next();
+        final TestRecord<Long, String> scoreRekeyRecord7 = scoreRekeyRecords.get(7);
         Assertions.assertEquals(2L, scoreRekeyRecord7.key());
         JSONAssert.assertEquals(getPayload("/topology-test/score-rekeys/message8.json"), scoreRekeyRecord7.value(), false);
 
-        final ConsumerRecord<Long, String> scoreRekeyRecord8 = scoreRekeyRecordsIterable.next();
+        final TestRecord<Long, String> scoreRekeyRecord8 = scoreRekeyRecords.get(8);
         Assertions.assertEquals(2L, scoreRekeyRecord8.key());
         JSONAssert.assertEquals(getPayload("/topology-test/score-rekeys/message9.json"), scoreRekeyRecord8.value(), false);
 
-        final ConsumerRecord<Long, String> scoreRekeyRecord9 = scoreRekeyRecordsIterable.next();
+        final TestRecord<Long, String> scoreRekeyRecord9 = scoreRekeyRecords.get(9);
         Assertions.assertEquals(2L, scoreRekeyRecord9.key());
         JSONAssert.assertEquals(getPayload("/topology-test/score-rekeys/message10.json"), scoreRekeyRecord9.value(), false);
 
-        final ConsumerRecord<Long, String> scoreRekeyRecord10 = scoreRekeyRecordsIterable.next();
+        final TestRecord<Long, String> scoreRekeyRecord10 = scoreRekeyRecords.get(10);
         Assertions.assertEquals(2L, scoreRekeyRecord10.key());
         JSONAssert.assertEquals(getPayload("/topology-test/score-rekeys/message11.json"), scoreRekeyRecord10.value(), false);
 
         // Verify joins
-        final ConsumerRecords<Long, String> joinRecords = KafkaTestUtils.getRecords(gameAndScoreJoinConsumer);
-        Assertions.assertEquals(11, joinRecords.count());
+        final List<TestRecord<Long, String>> joinRecords = gameAndScoreJoin.readRecordsToList();
 
-        System.out.println("Hello!");
-        System.out.println("Your consumed join records are: " + joinRecords.count());
-        joinRecords.forEach(System.out::println);
+        final Optional<TestRecord<Long, String>> game1Aggregate = joinRecords
+            .stream()
+            .filter(record -> record.key() == 1L)
+            .reduce((first, second) -> second);
+
+        Assertions.assertTrue(game1Aggregate.isPresent());
+        JSONAssert.assertEquals(getPayload("/topology-test/joins/game1aggregate.json"), game1Aggregate.get().value(), false);
+
+        final Optional<TestRecord<Long, String>> game2Aggregate = joinRecords
+                .stream()
+                .filter(record -> record.key() == 2L)
+                .reduce((first, second) -> second);
+
+        Assertions.assertTrue(game2Aggregate.isPresent());
+        JSONAssert.assertEquals(getPayload("/topology-test/joins/game2Aggregate.json"), game2Aggregate.get().value(), false);
+
+        // Verify results
+        final List<TestRecord<Long, String>> resultRecords = gameResultTopic.readRecordsToList();
+
+        final Optional<TestRecord<Long, String>> game1Result = resultRecords
+            .stream()
+            .filter(record -> record.key() == 1L)
+            .reduce((first, second) -> second);
+        Assertions.assertTrue(game1Result.isPresent());
+        JSONAssert.assertEquals(getPayload("/topology-test/results/game1result.json"), game1Result.get().value(), false);
+
+        final Optional<TestRecord<Long, String>> game2Result = resultRecords
+                .stream()
+                .filter(record -> record.key() == 2L)
+                .reduce((first, second) -> second);
+        Assertions.assertTrue(game2Result.isPresent());
+        JSONAssert.assertEquals(getPayload("/topology-test/results/game2result.json"), game2Result.get().value(), false);
     }
 
     private String getPayload(String resource) throws IOException, URISyntaxException {

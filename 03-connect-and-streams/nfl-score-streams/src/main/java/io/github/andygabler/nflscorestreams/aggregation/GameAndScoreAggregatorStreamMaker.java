@@ -1,5 +1,8 @@
 package io.github.andygabler.nflscorestreams.aggregation;
 
+import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.node.ArrayNode;
 import io.github.andygabler.nflscorestreams.StreamMaker;
 import io.github.andygabler.nflscorestreams.util.JsonNodeFlatMapper;
 import io.github.andygabler.nflscorestreams.util.JsonNodeToStringMapper;
@@ -23,7 +26,6 @@ public class GameAndScoreAggregatorStreamMaker implements StreamMaker {
 
     @Override
     public void buildPipeline(StreamsBuilder streamsBuilder) {
-        // TODO consider flushing state store more often. Maybe set to 0
         final KTable<Long, String> gameRekeyTable = streamsBuilder
             .table(
                 "nflscoredatabase.public.football_game.rekey",
@@ -36,23 +38,37 @@ public class GameAndScoreAggregatorStreamMaker implements StreamMaker {
                     Consumed.with(Serdes.Long(), Serdes.String())
             );
 
+        final KTable<Long, String> scoreAggregateTable = scoreRekeyStream
+            .groupByKey(Grouped.with(Serdes.Long(), Serdes.String()))
+            .aggregate(
+                // todo class with unit test
+                () -> "[]",
+                (key, value, aggregation) -> {
+                    try {
+                        final ObjectMapper objectReader = new ObjectMapper();
+                        final ArrayNode scoreArray = objectReader.readValue(aggregation, ArrayNode.class);
+                        scoreArray.add(objectReader.readValue(value, JsonNode.class));
+                        return scoreArray.toString();
+                    } catch (Exception exception) {
+                        exception.printStackTrace();
+                        return aggregation.toString();
+                    }
+                }, Materialized.with(Serdes.Long(), Serdes.String()));
 
-        /*
-         * We want a left join here. Stream will throw exception that will be retried if KTable value is late.
-         */
-        scoreRekeyStream
-            .leftJoin(gameRekeyTable, gameAndScoreAggregatorJoiner)
+        gameRekeyTable
+            .leftJoin(scoreAggregateTable, gameAndScoreAggregatorJoiner)
             .mapValues(jsonNodeToStringMapper)
+            .toStream()
             .to("nflscoredatabase.public.score_and_game_join", Produced.with(Serdes.Long(), Serdes.String()));
 
-        // TODO could be ktable
-        final KStream<Long, String> joinStream = streamsBuilder
-            .stream(
-                "nflscoredatabase.public.score_and_game_join",
-                Consumed.with(Serdes.Long(), Serdes.String())
-            );
+        final KStream<Long, String> scoreAndGameJoinStream =
+            streamsBuilder
+                .stream(
+                    "nflscoredatabase.public.score_and_game_join",
+                    Consumed.with(Serdes.Long(), Serdes.String())
+                );
 
-        joinStream
+        scoreAndGameJoinStream
             .flatMap(new JsonNodeFlatMapper<>())
             .mapValues(gameResultSumMapper)
             .mapValues(jsonNodeToStringMapper)

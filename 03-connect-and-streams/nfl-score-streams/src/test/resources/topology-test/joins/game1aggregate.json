@@ -1,0 +1,64 @@
+{
+  "id": 1,
+  "match_date": 20338,
+  "home_team": "Titans",
+  "visiting_team": "Vikings",
+  "scores": [
+    {
+      "id": 1,
+      "football_game_id": 1,
+      "quarterback": "Cameron Ward",
+      "ball_carrier": "DeAndre Hopkins",
+      "snap_type": "PASSING",
+      "team": "Titans"
+    },
+    {
+      "id": 2,
+      "football_game_id": 1,
+      "quarterback": "JJ McCarthy",
+      "ball_carrier": "Jordan Addison",
+      "snap_type": "PASSING",
+      "team": "Vikings"
+    },
+    {
+      "id": 3,
+      "football_game_id": 1,
+      "quarterback": "JJ McCarthy",
+      "ball_carrier": "Will Reichard",
+      "snap_type": "EXTRA POINT KICK",
+      "team": "Vikings"
+    },
+    {
+      "id": 4,
+      "football_game_id": 1,
+      "quarterback": "Cameron Ward",
+      "ball_carrier": "DeAndre Hopkins",
+      "snap_type": "RUSHING",
+      "team": "Titans"
+    },
+    {
+      "id": 5,
+      "football_game_id": 1,
+      "quarterback": "Cameron Ward",
+      "ball_carrier": "Joey Slye",
+      "snap_type": "RUSHING",
+      "team": "Titans"
+    },
+    {
+      "id": 6,
+      "football_game_id": 1,
+      "quarterback": "JJ McCarthy",
+      "ball_carrier": "Aaron Jones",
+      "snap_type": "PASSING",
+      "team": "Vikings"
+    },
+    {
+      "id": 7,
+      "football_game_id": 1,
+      "quarterback": "JJ McCarthy",
+      "ball_carrier": "Will Reichard",
+      "snap_type": "EXTRA POINT KICK",
+      "team": "Vikings"
+    }
+  ]
+}

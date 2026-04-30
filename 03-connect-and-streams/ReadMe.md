@@ -40,12 +40,35 @@ kafka-console-consumer \
 
 Drop all messages on all topics (set back to -1 to keep retaining all)
 ```sh
-for topic in $(kafka-topics.sh --bootstrap-server localhost:9092 --list | grep nflscoredatabase); do
-   kafka-configs.sh \
+for topic in $(kafka-topics --bootstrap-server localhost:9092 --list | grep nflscoredatabase); do
+   kafka-configs \
      --bootstrap-server localhost:9092 \
      --entity-type topics \
      --entity-name $topic \
      --alter \
-     --add-config retention.ms=1
+     --add-config retention.ms=-1
  done
+```
+
+This will need to be ran before running streams anything.
+```sh
+kafka-topics --create \
+  --topic nflscoredatabase.public.football_game.rekey \
+  --bootstrap-server localhost:9092 \
+  --partitions 3 --replication-factor 1
+
+kafka-topics --create \
+  --topic nflscoredatabase.public.game_score.rekey \
+  --bootstrap-server localhost:9092 \
+  --partitions 3 --replication-factor 1
+
+kafka-topics --create \
+  --topic nflscoredatabase.public.score_and_game_join \
+  --bootstrap-server localhost:9092 \
+  --partitions 3 --replication-factor 1
+
+kafka-topics --create \
+  --topic nflscoredatabase.sink.game_result \
+  --bootstrap-server localhost:9092 \
+  --partitions 3 --replication-factor 1
 ```
