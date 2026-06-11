@@ -22,6 +22,9 @@ public class GameAndScoreAggregatorStreamMaker implements StreamMaker {
     private GameResultSumMapper gameResultSumMapper;
 
     @Autowired
+    private GameResultToDebeziumSinkMapper gameResultToDebeziumSinkMapper;
+
+    @Autowired
     private JsonNodeToStringMapper jsonNodeToStringMapper;
 
     @Override
@@ -71,6 +74,7 @@ public class GameAndScoreAggregatorStreamMaker implements StreamMaker {
         scoreAndGameJoinStream
             .flatMap(new JsonNodeFlatMapper<>())
             .mapValues(gameResultSumMapper)
+            .mapValues(gameResultToDebeziumSinkMapper)
             .mapValues(jsonNodeToStringMapper)
             .to("nflscoredatabase.sink.game_result", Produced.with(Serdes.Long(), Serdes.String()));
     }

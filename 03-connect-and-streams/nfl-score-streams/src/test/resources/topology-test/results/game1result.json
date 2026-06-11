@@ -1,8 +1,47 @@
 {
-  "id": 1,
-  "match_date": 20338,
-  "home_team": "Titans",
-  "visiting_team": "Vikings",
-  "home_team_score": 18,
-  "visiting_team_score": 14
+  "schema": {
+    "type": "struct",
+    "optional": false,
+    "name": "game_result",
+    "fields": [
+      {
+        "field": "id",
+        "type": "int32",
+        "optional": false
+      },
+      {
+        "field": "match_date",
+        "type": "int32",
+        "optional": false
+      },
+      {
+        "field": "home_team",
+        "type": "string",
+        "optional": false
+      },
+      {
+        "field": "visiting_team",
+        "type": "string",
+        "optional": false
+      },
+      {
+        "field": "home_team_score",
+        "type": "int32",
+        "optional": false
+      },
+      {
+        "field": "visiting_team_score",
+        "type": "int32",
+        "optional": false
+      }
+    ]
+  },
+  "payload": {
+    "id": 1,
+    "match_date": 20338,
+    "home_team": "Titans",
+    "visiting_team": "Vikings",
+    "home_team_score": 18,
+    "visiting_team_score": 14
+  }
 }

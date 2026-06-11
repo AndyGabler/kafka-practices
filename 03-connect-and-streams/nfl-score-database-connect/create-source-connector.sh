@@ -9,10 +9,10 @@ curl -X POST http://localhost:8083/connectors \
           "database.user": "postgres",
           "database.password": "Admin123",
           "database.dbname": "NFLScoreDatabase",
-          "database.server.name": "nflscoredatabase",
           "topic.prefix": "nflscoredatabase",
           "plugin.name": "pgoutput",
-          "topic.creation.default.retention.ms": -1,
-          "topic.creation.default.replication.factor": 1
+          "topic.creation.default.retention.ms": "-1",
+          "topic.creation.default.partitions": "1",
+          "topic.creation.default.replication.factor": "1"
         }
       }'
