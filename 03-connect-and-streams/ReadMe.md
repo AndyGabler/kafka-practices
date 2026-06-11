@@ -13,7 +13,7 @@ Goal is to have a few different topics.
 
 ## Architecture
 
-![Architecture](/docs/Architecture%20Diagram.drawio.png)
+![Architecture](./docs/Architecture%20Diagram.drawio.png)
 
 ## Local Setup/Demo
 
@@ -40,7 +40,7 @@ docker-compose up -d
 ```
 
 This should create a new Docker deployment.
-![Proper Docker Setup](/docs/demo/01-1%20Docker%20Setup.PNG)
+![Proper Docker Setup](./docs/demo/01-1%20Docker%20Setup.PNG)
 
 Make sure to reset your terminal/command prompt to the root directory for the rest of the demo.
 
@@ -118,16 +118,16 @@ To verify it worked, you can re-run the queries from earlier.
 Or you can use the Rest API by using any of the following URLs:
 
 http://localhost:8084/game?page=0&sort=matchDate,desc (games, pageable)
-![Games](/docs/demo/04-1%20games.PNG)
+![Games](./docs/demo/04-1%20games.PNG)
 
 http://localhost:8084/score?page=0 (scores, pageable)
-![Scores](/docs/demo/04-2%20scores.PNG)
+![Scores](./docs/demo/04-2%20scores.PNG)
 
 http://localhost:8084/game/8 (game by ID)
-![Game by ID](/docs/demo/04-3%20game%20by%20id.PNG)
+![Game by ID](./docs/demo/04-3%20game%20by%20id.PNG)
 
 http://localhost:8084/score/292 (score by ID)
-![Score by ID](/docs/demo/04-4%20score%20by%20id.PNG)
+![Score by ID](./docs/demo/04-4%20score%20by%20id.PNG)
 
 #### 5. Create Kafka Connectors
 
@@ -148,7 +148,7 @@ SELECT *
 FROM nflscoredatabase_sink_game_result
 ORDER BY id desc;
 ```
-![Game Results](/docs/demo/06-1%20results%20tables%20populated.PNG)
+![Game Results](./docs/demo/06-1%20results%20tables%20populated.PNG)
 
 This query can be used to spot-check an individual game result against SQL. In this case, I spot-checked Game 76,
 the Buccaneers vs Titans and game up with the same score as my Kafka Streams app (13-31).
@@ -194,7 +194,7 @@ CROSS JOIN LATERAL (
 ) visiting_score
 WHERE game.id = 76
 ```
-![Results Verified](/docs/demo/06-2%20results%20verified.PNG)
+![Results Verified](./docs/demo/06-2%20results%20verified.PNG)
 
 ## Helpful Links
 
