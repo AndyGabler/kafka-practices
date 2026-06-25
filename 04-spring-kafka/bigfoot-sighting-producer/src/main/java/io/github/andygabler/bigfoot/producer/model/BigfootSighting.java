@@ -1,0 +1,11 @@
+package io.github.andygabler.bigfoot.producer.model;
+
+import lombok.Data;
+
+@Data
+public class BigfootSighting {
+    private String spotter;
+    private float latitude;
+    private float longitude;
+    private String sightingType;
+}
